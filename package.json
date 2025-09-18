@@ -1,16 +1,29 @@
 {
   "name": "lottery-check",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "App para verificar lotería de Nueva York (datos reales).",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js",
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.19.2",
-    "morgan": "^1.10.0"
+    "express": "^4.21.2",
+    "morgan": "^1.10.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danfin09/lottery-check.git"
+  },
+  "bugs": {
+    "url": "https://github.com/danfin09/lottery-check/issues"
+  },
+  "homepage": "https://github.com/danfin09/lottery-check#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }
