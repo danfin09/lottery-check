@@ -15,12 +15,15 @@ const prizeData = JSON.parse(fs.readFileSync('./data/prizes.json', 'utf-8'));
 // Añadimos el middleware de morgan para loguear todas las peticiones que haga un cliente
 app.use(logger('dev'));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 
 // nos gustaría que también gestionaras los datos de tipo JSON (entre ellos los POST que nos lleguen)
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/views/index.html');
 });
@@ -42,7 +45,7 @@ if (!draw) {
 
 res.json({
     mensaje: 'Sorteo encontrado',
-    winningNumbers: draw.winningNumbers.join(", ")
+    winningNumbers: draw.winningNumbers.join(" ")
     });
 
 });
