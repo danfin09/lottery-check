@@ -32,19 +32,19 @@ app.get('/api/check-date', (req, res) => {
     const { date } = req.query;
 
     if (!date) {
-        return res.status(400).json({ error: 'Fecha no proporcionada' });
+        return res.status(400).json({ error: 'This filed is required' });
     }
 
 const draw = lotteryData.find(d => d.date === date);
 
 if (!draw) {
     return res.json({
-        mensaje: 'Sorteo no encontrado'
+        mensaje: 'Draw not found'
     });
 }
 
 res.json({
-    mensaje: 'Sorteo encontrado',
+    mensaje: 'Draw found',
     winningNumbers: draw.winningNumbers.join(" ")
     });
 
@@ -55,19 +55,25 @@ app.get('/api/get-computed-result', (req, res) => {
     const { date, playNumbers } = req.query;
 
     if (!date || !playNumbers) {
-        return res.status(400).json({ error: 'Datos incompletos' });
+        return res.status(400).json({ error: 'Date is required' });
     }
 
     const draw = lotteryData.find(d => d.date === date);
 
     if (!draw) {
         return res.json({
-            mensaje: 'Sorteo no encontrado'
+            mensaje: 'Draw not found for the given date'
         });
     }
 
-    const userNumbers = playNumbers.split(',').map(num => parseInt(num));
+    const userNumbers = playNumbers.split(' ')
+                                    .map(num => parseInt(num));
+
     const winningNumbers = draw.winningNumbers;
+    if(userNumbers.length !==7 ) {
+        return res.status(400).json
+        message: "7 numbers are required"
+    }
 
     const matchedNumbers = userNumbers.filter(num => winningNumbers.includes(num));
     const matchCount = matchedNumbers.length;
@@ -75,7 +81,7 @@ app.get('/api/get-computed-result', (req, res) => {
    const prize = prizeData[matchCount] || 0;
 
    res.json({
-       matchedNumbers: matchedNumbers.length,
+       matchedNumbers: matchCount,
        prize: prize
    });
 });
