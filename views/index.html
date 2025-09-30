@@ -45,6 +45,12 @@
             e.preventDefault();
             const date = document.getElementById('date').value;
             // TODO: Realizar llamada al servidor. Procesar los datos y rellenar adecuadamente el DIV
+            const resultDiv = document.getElementById('numbersResult');
+
+            if (!date) {
+                showError(resultDiv, 'select a date');
+                return;
+            }
         });
 
         document.querySelector('#checkYourNumberForm').addEventListener('submit', (e) => {
