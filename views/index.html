@@ -45,25 +45,59 @@
             e.preventDefault();
             const date = document.getElementById('date').value;
             // TODO: Realizar llamada al servidor. Procesar los datos y rellenar adecuadamente el DIV
-            const resultDiv = document.getElementById('numbersResult');
+           const resultDiv = document.getElementById('numbersResult');
+            const loadingDiv = document.getElementById('dateLoading');
 
             if (!date) {
-                showError(resultDiv, 'select a date');
+                showError(resultDiv, 'selected date is required');
                 return;
+            }
+
+            try {
+                const response = await fetch(`/api/check-date?date=${date}`);
+                const result = await response.json();
+
+                if(result.message  === 'Draw found') {
+                    resultDiv.value = result.winningNumbers;
+                } else if(result.message) {
+                    showError(resultDiv, result.message);
+                } else {
+                    showError(resultDiv, 'Unexpected response from server');
+                }
+            } catch (error) {
+                showError(resultDiv, 'Error al comunicarse con el servidor');
             }
         });
 
-        document.querySelector('#checkYourNumberForm').addEventListener('submit', (e) => {
+        document.querySelector('#checkYourNumberForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const date = document.getElementById('yourDate').value;
             const yourNumbers = document.getElementById('yourNumbers').value;
             // TODO: Realizar llamada al servidor. Procesar los datos y rellenar adecuadamente el DIV    
+            const resultDiv = document.getElementById('yourNumbersResult');
+            const loadingDiv = document.getElementById('yourDateLoading');   
+            loadingDiv.style.display = 'block';
+
             if (!date || !yourNumbers) {
                 showError(resultDiv, 'Por favor, completa todos los campos');
+                loadingDiv.style.display = 'none';
                 return;
-            }   
-            
-            
+            }
+
+            try {
+                const response = await fetch(`/api/get-computed-results?date=${date}&playNumbers=${yourNumbers}`);
+                const result = await response.json();
+
+                if (result.error) {
+                    showError(resultDiv, result.message);
+                } else {
+                    resultDiv.value = `Aciertos: ${result.matchNumbers}, Premio: ${result.prize}`;
+                }
+            } catch (error) {
+                showError(resultDiv, 'Error al comunicarse con el servidor');
+            } finally {
+                loadingDiv.style.display = 'none';
+            }
         });
     </script>
 </body>
