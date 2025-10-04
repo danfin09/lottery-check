@@ -57,7 +57,13 @@
             e.preventDefault();
             const date = document.getElementById('yourDate').value;
             const yourNumbers = document.getElementById('yourNumbers').value;
-            // TODO: Realizar llamada al servidor. Procesar los datos y rellenar adecuadamente el DIV        
+            // TODO: Realizar llamada al servidor. Procesar los datos y rellenar adecuadamente el DIV    
+            if (!date || !yourNumbers) {
+                showError(resultDiv, 'Por favor, completa todos los campos');
+                return;
+            }   
+            
+            
         });
     </script>
 </body>
